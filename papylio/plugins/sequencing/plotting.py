@@ -6,14 +6,6 @@ import xarray as xr
 from pathlib2 import Path
 
 
-###################################################
-## To enable interactive plotting with PySide2 in PyCharm 2022.3
-import PySide2
-import sys
-sys.modules['PyQt5'] = sys.modules['PySide2']
-from matplotlib import use
-use('Qt5Agg')
-###################################################
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches

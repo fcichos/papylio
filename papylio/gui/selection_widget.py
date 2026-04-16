@@ -5,10 +5,10 @@ Provides a small Qt widget used in the GUI to create and apply selections to mol
 
 import sys
 import json
-from PySide2.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QGridLayout, QTreeView, QApplication, QMainWindow, \
+from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QGridLayout, QTreeView, QApplication, QMainWindow, \
     QPushButton, QTabWidget, QTableWidget, QComboBox, QLineEdit
-from PySide2.QtGui import QStandardItem, QStandardItemModel
-from PySide2.QtCore import Qt
+from PySide6.QtGui import QStandardItem, QStandardItemModel
+from PySide6.QtCore import Qt
 
 import numpy as np
 
@@ -135,7 +135,7 @@ class SelectionWidget(QWidget):
             selection_names = []
             for i in range(self.model.rowCount()):
                 item = self.model.item(i)
-                if item.checkState() == Qt.Checked:
+                if item.checkState() == Qt.CheckState.Checked:
                     selection_names.append(self.model.item(i).data())
             self.file.apply_selections(*selection_names)
             self.refresh_selections()
@@ -184,9 +184,9 @@ class SelectionWidget(QWidget):
                 items[0].setData(name)
                 if 'configuration' in self.file.selected.attrs.keys():
                     if np.isin(name, json.loads(self.file.selected.attrs['configuration'])):
-                        items[0].setCheckState(Qt.Checked)
+                        items[0].setCheckState(Qt.CheckState.Checked)
                     else:
-                        items[0].setCheckState(Qt.Unchecked)
+                        items[0].setCheckState(Qt.CheckState.Unchecked)
                 self.root.appendRow(items)
 
             items = [QStandardItem('') for _ in range(6)]
@@ -347,11 +347,11 @@ class SelectionWidget(QWidget):
 #
 # # from trace_analysis.plugins.holliday_junction.holliday_junction import *
 # import sys
-# from PySide2.QtWidgets import (QApplication, QMainWindow, QTreeView, QListView, QFileSystemModel,
+# from PySide6.QtWidgets import (QApplication, QMainWindow, QTreeView, QListView, QFileSystemModel,
 #                                QVBoxLayout, QHBoxLayout, QWidget, QStyledItemDelegate, QComboBox)
-# from PySide2.QtCore import Qt
-# from PySide2.QtGui import QStandardItem, QStandardItemModel
-# from PySide2.QtWidgets import QTreeWidget, QTreeWidgetItem, QComboBox, QTextEdit, QLineEdit, QPushButton
+# from PySide6.QtCore import Qt
+# from PySide6.QtGui import QStandardItem, QStandardItemModel
+# from PySide6.QtWidgets import QTreeWidget, QTreeWidgetItem, QComboBox, QTextEdit, QLineEdit, QPushButton
 #
 # class TreeViewExample(QMainWindow):
 #     def __init__(self):
@@ -635,4 +635,4 @@ class SelectionWidget(QWidget):
 #
 #     window.selection.file = exp.files[-1]
 #
-#     sys.exit(app.exec_())
+#     sys.exit(app.exec())

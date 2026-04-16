@@ -405,7 +405,7 @@ from papylio.experiment import get_QApplication
 app = get_QApplication()
 frame = TracePlotWindow(ds_seq, plot_variables=['intensity', 'FRET', 'classification_anticorrelation'],
                         ylims=[(0, 15000), (-0.1,1.1), (-1,2)], colours=[('g', 'r'), ('b'), ('k')], save_path=None)
-app.exec_()
+app.exec()
 
 
 

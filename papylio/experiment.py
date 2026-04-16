@@ -9,7 +9,6 @@ Created on Fri Sep 14 15:24:46 2018
 # if platform == "darwin":
 #     from matplotlib import use
 #     use('WXAgg')
-import PySide2
 import os  # Miscellaneous operating system interfaces - to be able to switch from Mac to Windows
 from pathlib import Path  # For efficient path manipulation
 
@@ -19,14 +18,6 @@ import numpy as np
 import pandas as pd
 # import wx
 
-###################################################
-## To enable interactive plotting with PySide2 in PyCharm 2022.3
-import PySide2
-import sys
-sys.modules['PyQt5'] = sys.modules['PySide2']
-from matplotlib import use
-use('Qt5Agg')
-###################################################
 
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt  # Provides a MATLAB-like plotting framework
@@ -201,17 +192,17 @@ class Configuration(UserDict):
 
 # from PyQt5.QtWidgets import QFileDialog
 def get_QApplication():
-    """Get or create a PySide2 QApplication instance.
+    """Get or create a PySide6 QApplication instance.
 
     Returns the existing QApplication instance if one exists, otherwise
     creates and returns a new one.
 
     Returns
     -------
-    PySide2.QtWidgets.QApplication
+    PySide6.QtWidgets.QApplication
         The QApplication instance
     """
-    from PySide2 import QtWidgets
+    from PySide6 import QtWidgets
     app = QtWidgets.QApplication.instance()
     if app is None:
         # if it does not exist then a QApplication is created
@@ -226,7 +217,7 @@ def get_path(main_window):
 
     Parameters
     ----------
-    main_window : PySide2.QtWidgets.QMainWindow, optional
+    main_window : PySide6.QtWidgets.QMainWindow, optional
         Parent window for the dialog. If None, a new QMainWindow is created
 
     Returns
@@ -245,7 +236,7 @@ def get_path(main_window):
     # dlg.Destroy()
 
     app = get_QApplication()
-    from PySide2.QtWidgets import QFileDialog, QMainWindow
+    from PySide6.QtWidgets import QFileDialog, QMainWindow
     if main_window is None:
         main_window = QMainWindow()
     path = QFileDialog.getExistingDirectory(main_window, 'Choose directory')

@@ -3,7 +3,7 @@
 Provides a convenience function to start the GUI application with default options.
 """
 
-from PySide2.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication
 import sys
 
 from multiprocessing import Process, freeze_support
@@ -21,7 +21,7 @@ def start_gui():
     from papylio.gui.main import MainWindow
     window = MainWindow()
     window.show()
-    app.exec_()
+    app.exec()
 
 
 if __name__ == '__main__':

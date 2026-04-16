@@ -4,14 +4,13 @@ Defines the main application window and image canvas used by the Papylio GUI.
 """
 
 import sys
-import PySide2
 import platform
 
 import sys
-from PySide2.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QGridLayout, QTreeView, QApplication, QMainWindow, \
+from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QGridLayout, QTreeView, QApplication, QMainWindow, \
     QPushButton, QTabWidget, QTableWidget, QComboBox, QLineEdit
-from PySide2.QtGui import QStandardItem, QStandardItemModel, QIcon
-from PySide2.QtCore import Qt
+from PySide6.QtGui import QStandardItem, QStandardItemModel, QIcon
+from PySide6.QtCore import Qt
 
 import matplotlib as mpl
 from matplotlib.backends.backend_qtagg import (
@@ -184,14 +183,14 @@ from papylio.gui.classification_widget import ClassificationWidget
 #             item = index.internalPointer()
 #         return item.hasChildren()
 #
-#     def data(self, index, role=QtCore.Qt.DisplayRole):
-#        if index.isValid() and role == QtCore.Qt.DisplayRole:
+#     def data(self, index, role=QtCore.Qt.ItemDataRole.DisplayRole):
+#        if index.isValid() and role == QtCore.Qt.ItemDataRole.DisplayRole:
 #             return index.internalPointer().data(index.column())
 #        elif not index.isValid():
 #             return self.root.getData()
 #
 #     def headerData(self, section, orientation, role):
-#         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
+#         if orientation == QtCore.Qt.Orientation.Horizontal and role == QtCore.Qt.ItemDataRole.DisplayRole:
 #             return self.root.data(section)
 #
 #
@@ -262,7 +261,7 @@ class MainWindow(QMainWindow):
         self.tree.header().setDefaultSectionSize(180)
         self.tree.setModel(self.model)
 
-        self.tree.setFocusPolicy(Qt.NoFocus)
+        self.tree.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.tree.setFixedWidth(256)
         self.update = True
 
@@ -283,7 +282,7 @@ class MainWindow(QMainWindow):
         self.image.setLayout(image_layout)
 
         controls_layout = QGridLayout()
-        controls_layout.setAlignment(Qt.AlignTop)
+        controls_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # controls_layout.addWidget(QLabel('Minimum intensity difference'), 0, 0)
         # mid = QLineEdit(str(self.experiment.configuration['find_coordinates']['peak_finding']['minimum_intensity_difference']))
@@ -400,7 +399,7 @@ class MainWindow(QMainWindow):
     def onItemChange(self, item):
         if isinstance(item.data(), File):
             file = item.data()
-            file.isSelected = (True if item.checkState() == Qt.Checked else False)
+            file.isSelected = (True if item.checkState() == Qt.CheckState.Checked else False)
             print(f'{file}: {file.isSelected}')
 
         else:
@@ -471,9 +470,9 @@ class MainWindow(QMainWindow):
         item = parentItem.child(parentItem.rowCount() - 1)
         item.setCheckable(True)
         if file.isSelected:
-            item.setCheckState(Qt.Checked)
+            item.setCheckState(Qt.CheckState.Checked)
         else:
-            item.setCheckState(Qt.Unchecked)
+            item.setCheckState(Qt.CheckState.Unchecked)
         item.setData(file)
         #self.FileItems.append(item)
 
@@ -534,4 +533,4 @@ if __name__ == '__main__':
     window = MainWindow()
     window.show()
 
-    app.exec_()
+    app.exec()

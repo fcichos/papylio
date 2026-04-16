@@ -4,14 +4,14 @@ Contains Qt widgets used for creating and applying classifications to traces wit
 """
 
 import sys
-from PySide2.QtCore import Signal
-from PySide2.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QComboBox,
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QComboBox,
     QLabel, QLineEdit, QPushButton, QFormLayout, QSpinBox, QDoubleSpinBox,
     QTreeView, QMainWindow, QMessageBox, QCheckBox
 )
 
-from PySide2.QtGui import QStandardItem, QStandardItemModel
-from PySide2.QtCore import Qt
+from PySide6.QtGui import QStandardItem, QStandardItemModel
+from PySide6.QtCore import Qt
 
 from papylio.analysis.classification_simple import classify_threshold
 from papylio.analysis.hidden_markov_modelling import classify_hmm
@@ -257,7 +257,7 @@ class ClassificationWidget(QWidget):
         items[0].setCheckable(True)
         for i, item in enumerate(items):
             if i not in [1]:
-                # item.setFlags(item.flags() & ~Qt.ItemIsEditable)
+                # item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
                 item.setEditable(False)
         # items[2].setData(name)
 
@@ -265,10 +265,10 @@ class ClassificationWidget(QWidget):
         if 'configuration' in self.file.classification.attrs.keys():
             configuration = json.loads(self.file.classification.attrs['configuration'])
             if name in configuration:
-                items[0].setCheckState(Qt.Checked)
+                items[0].setCheckState(Qt.CheckState.Checked)
                 # text_edit.setText(str(configuration[name]))
             else:
-                items[0].setCheckState(Qt.Unchecked)
+                items[0].setCheckState(Qt.CheckState.Unchecked)
 
     def refresh_classifications(self):
         """Refresh the list of available classifications from the file."""
@@ -301,7 +301,7 @@ class ClassificationWidget(QWidget):
         # if not name:
         #     return
         #
-        # checked = (item.checkState() == Qt.Checked)
+        # checked = (item.checkState() == Qt.CheckState.Checked)
         #
         # # Example: print or update your file selections
         # print(f"Checkbox toggled for '{name}': {'Checked' if checked else 'Unchecked'}")
@@ -327,7 +327,7 @@ class ClassificationWidget(QWidget):
         for row in range(self.model.rowCount()):
             item_checkbox = self.model.item(row, 0)
 
-            if item_checkbox.checkState() == Qt.Checked:
+            if item_checkbox.checkState() == Qt.CheckState.Checked:
 
                 classification_states = self.model.item(row, 1).text()
                 classification_name = 'classification_' + self.model.item(row, 2).text()
@@ -421,7 +421,7 @@ class ClassificationWidget(QWidget):
     #         selection_names = []
     #         for i in range(self.model.rowCount()):
     #             item = self.model.item(i)
-    #             if item.checkState() == Qt.Checked:
+    #             if item.checkState() == Qt.CheckState.Checked:
     #                 selection_names.append(self.model.item(i).data())
     #         self.file.apply_selections(selection_names)
     #         self.refresh_selections()
@@ -458,9 +458,9 @@ class ClassificationWidget(QWidget):
     #             items[0].setData(name)
     #             if 'selection_names' in self.file.selected.attrs.keys():
     #                 if np.isin(name, self.file.selected.attrs['selection_names']):
-    #                     items[0].setCheckState(Qt.Checked)
+    #                     items[0].setCheckState(Qt.CheckState.Checked)
     #                 else:
-    #                     items[0].setCheckState(Qt.Unchecked)
+    #                     items[0].setCheckState(Qt.CheckState.Unchecked)
     #             self.root.appendRow(items)
     #
     #         items = [QStandardItem('') for _ in range(6)]
