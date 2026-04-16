@@ -13,6 +13,7 @@ from typing import Optional
 # print('PySide6', sys.modules.get("PySide6.QtCore"))
 
 
+import matplotlib
 import matplotlib.pyplot as plt
 
 # from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
