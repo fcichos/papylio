@@ -14,7 +14,7 @@ from copy import deepcopy
 import scipy.linalg
 
 # file.FRET, file.classification, file.selected
-def classify_hmm(traces, classification, selection, n_states=2, threshold_state_mean=None, level='molecule', seed=0, parallel=True):
+def classify_hmm(traces, classification, selection, n_states=2, threshold_state_mean=None, level='molecule', seed=0, parallel=True, stop_threshold=1e-3, max_iterations=100):
     """Classify traces using Hidden Markov Models (HMMs).
 
     Fits HMMs either per-molecule or per-file and returns a Dataset with
@@ -38,6 +38,11 @@ def classify_hmm(traces, classification, selection, n_states=2, threshold_state_
         RNG seed for reproducibility (default: 0)
     parallel : bool, optional
         Use all available CPU cores to fit molecules in parallel (default: True)
+    stop_threshold : float, optional
+        Baum-Welch convergence threshold; 1e-3 is sufficient for FRET data and
+        much faster than the pomegranate default of 1e-9 (default: 1e-3)
+    max_iterations : int, optional
+        Maximum Baum-Welch iterations per model fit (default: 100)
 
     Returns
     -------
@@ -46,9 +51,9 @@ def classify_hmm(traces, classification, selection, n_states=2, threshold_state_
     """
     np.random.seed(seed)
     if level == 'molecule':
-        models_per_molecule = fit_hmm_to_individual_traces(traces, classification, selection, parallel=parallel, n_states=n_states, threshold_state_mean=threshold_state_mean)
+        models_per_molecule = fit_hmm_to_individual_traces(traces, classification, selection, parallel=parallel, n_states=n_states, threshold_state_mean=threshold_state_mean, stop_threshold=stop_threshold, max_iterations=max_iterations)
     elif level == 'file':
-        model = fit_hmm_to_file(traces, classification, selection, n_states=n_states, threshold_state_mean=threshold_state_mean)
+        model = fit_hmm_to_file(traces, classification, selection, n_states=n_states, threshold_state_mean=threshold_state_mean, stop_threshold=stop_threshold, max_iterations=max_iterations)
         number_of_molecules = np.shape(traces)[0]
         models_per_molecule = [deepcopy(model) for _ in range(number_of_molecules)]
     else:
@@ -195,7 +200,7 @@ def hmm1and2(input):
     # return parameters, transition_matrix
 
 
-def hmm_n_states(input, n_states=2, threshold_state_mean=None, level='molecule'):
+def hmm_n_states(input, n_states=2, threshold_state_mean=None, level='molecule', stop_threshold=1e-3, max_iterations=100):
     """Fit HMMs with up to n_states and return the best model by BIC.
 
     Parameters
@@ -208,6 +213,10 @@ def hmm_n_states(input, n_states=2, threshold_state_mean=None, level='molecule')
         Minimum separation required between state means to consider models distinct
     level : {'molecule','file'}
         Whether to fit per-molecule segments or treat the entire file as one sequence
+    stop_threshold : float
+        Baum-Welch convergence threshold passed to pomegranate (default: 1e-3)
+    max_iterations : int
+        Maximum Baum-Welch iterations (default: 100)
 
     Returns
     -------
@@ -249,7 +258,8 @@ def hmm_n_states(input, n_states=2, threshold_state_mean=None, level='molecule')
             model = pg.HiddenMarkovModel.from_matrix([[1]], [dist1], [1])
         else:
             try:
-                model = pg.HiddenMarkovModel.from_samples(pg.NormalDistribution, n_components=state, X=xis)
+                model = pg.HiddenMarkovModel.from_samples(pg.NormalDistribution, n_components=state, X=xis,
+                                                           stop_threshold=stop_threshold, max_iterations=max_iterations)
             except ValueError:
                 continue
 
@@ -285,25 +295,24 @@ def hmm_n_states(input, n_states=2, threshold_state_mean=None, level='molecule')
         return None
 
 
-def fit_hmm_to_individual_traces(traces, classification, selected, parallel=False, n_states=2, threshold_state_mean=None):
+def fit_hmm_to_individual_traces(traces, classification, selected, parallel=False, n_states=2, threshold_state_mean=None, stop_threshold=1e-3, max_iterations=100):
     """Fit HMMs to each molecule's trace individually (optionally in parallel).
 
     Returns a list of models (one per molecule), or None entries when fitting failed.
     """
     cf = ObjectList(list(zip(traces.values, classification.values, selected.values)), return_none_if_all_none=False)
     cf.use_parallel_processing = parallel
-    models_per_molecule = cf.map(hmm_n_states)(n_states=n_states, threshold_state_mean=threshold_state_mean)  # New taking sections into account 5540 traces: 5:02
-        # Old not taking sections into account: 5092 traces 4:00 minutes (2:37 on server)
+    models_per_molecule = cf.map(hmm_n_states)(n_states=n_states, threshold_state_mean=threshold_state_mean, stop_threshold=stop_threshold, max_iterations=max_iterations)
     return models_per_molecule
 
 
-def fit_hmm_to_file(traces, classification, selected, n_states=2, threshold_state_mean=None):
+def fit_hmm_to_file(traces, classification, selected, n_states=2, threshold_state_mean=None, stop_threshold=1e-3, max_iterations=100):
     """Fit a single HMM to the entire file (all molecules concatenated or treated as sections).
 
     Returns a single model instance applicable to every molecule.
     """
     input_values = [traces.values, classification.values, selected.values]
-    models = hmm_n_states(input_values, n_states=n_states, threshold_state_mean=threshold_state_mean, level='file')
+    models = hmm_n_states(input_values, n_states=n_states, threshold_state_mean=threshold_state_mean, level='file', stop_threshold=stop_threshold, max_iterations=max_iterations)
     return models
 
 
