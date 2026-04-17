@@ -63,11 +63,6 @@ sparxs = ["matplotlib-venn == 0.11", "perl"]
 gui = []
 dev = ["pytest","pytest-datadir","build","twine","sphinx","sphinx-book-theme","setuptools_scm>=8"]
 
-[tool.uv]
-override-dependencies = [
-    "scikit-image>=0.21",
-]
-
 [tool.pytest.ini_options]
 pythonpath = ["papylio"]
 testpaths = [
