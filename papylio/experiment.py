@@ -470,9 +470,9 @@ class Experiment:
             #paths = paths.glob('**/*')
                 #'**/?*.*')  # At least one character in front of the extension to prevent using hidden folders
 
-            # The following approach is faster than checking each file separately using is_file() for network drives. (not tested for regular drives)
+            # Python 3.12+ changed glob('**') to return files too, so we filter with is_dir() instead
             files_and_folders = set(paths.glob('**/*'))
-            folders = set(paths.glob('**'))
+            folders = {p for p in files_and_folders if p.is_dir()}
             paths = files_and_folders - folders
 
         file_paths_and_extensions = \
