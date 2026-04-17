@@ -729,7 +729,12 @@ class Experiment:
         Sets the common image corrections (flatfield, darkfield) to all movie
         objects in the experiment so they can be applied during image processing.
         """
-        self.files.movie._common_corrections = self.common_image_corrections
+        if not self.files:
+            return
+        try:
+            self.files.movie._common_corrections = self.common_image_corrections
+        except AttributeError:
+            pass
 
     # def show_flatfield_and_darkfield_corrections(self, name='', save=True):
     #     pass
