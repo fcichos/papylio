@@ -84,7 +84,7 @@ def extract_traces(movie, coordinates, background=None, mask_size=1.291, neighbo
 
         intensity = xr.DataArray(np.empty((len(coordinates.molecule), len(coordinates.channel), movie.number_of_frames)),
                                  dims=['molecule', 'channel', 'frame'],
-                                 coords=coordinates.drop('dimension').coords, name='intensity')
+                                 coords=coordinates.drop_vars('dimension').coords, name='intensity')
 
         # background_correction = xr.DataArray(np.empty((len(coordinates.molecule), len(coordinates.channel), movie.number_of_frames)),
         #                          dims=['molecule', 'channel', 'frame'],

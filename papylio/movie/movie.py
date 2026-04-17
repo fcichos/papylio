@@ -1275,8 +1275,12 @@ class Movie:
                     corrections.temporal_background_correction.values[frame_indices][frame_indices_with_illumination, :, None, None]
 
             if 'spatial_background_correction' in corrections:
-                frames[frame_indices_with_illumination] -= corrections.spatial_background_correction.values[None,
-                                                           illumination_index, :, :, :]
+                corr = corrections.spatial_background_correction.values[None, illumination_index, :, :, :]
+                if corr.shape == frames[frame_indices_with_illumination].shape:
+                    frames[frame_indices_with_illumination] -= corr
+                else:
+                    import warnings
+                    warnings.warn(f"Skipping spatial_background_correction: shape mismatch {corr.shape} vs {frames[frame_indices_with_illumination].shape}")
 
             if 'general_background_correction' in corrections:
                 frames[frame_indices_with_illumination] -= corrections.general_background_correction.values[None, illumination_index, :, None, None]
