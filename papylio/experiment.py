@@ -404,6 +404,8 @@ class Experiment:
     @property
     def selectedFiles(self):
         """list of File : List of selected files"""
+        if not self.files:
+            return self.files
         return self.files[self.files.isSelected]
 
     # @property
