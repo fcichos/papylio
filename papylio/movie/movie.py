@@ -496,7 +496,7 @@ class Movie:
 
     @property
     def number_of_channels_per_frame(self):
-        return np.product(self.channel_arrangement.shape[1:])
+        return np.prod(self.channel_arrangement.shape[1:])
 
     @property
     def illumination_arrangement(self):

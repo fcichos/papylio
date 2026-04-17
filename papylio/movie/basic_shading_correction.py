@@ -234,7 +234,7 @@ def spatial_shading_correction(movies, method='BaSiC', illumination_index=0, fra
 
 if __name__ == '__main__':
     import tifffile
-    from pathlib2 import Path
+    from pathlib import Path
     import numpy as np
 
     pth = Path(r'N:\tnw\BN\CMJ\Shared\Ivo\PhD_data\20220602 - Objective-type TIRF (BN)\Analysis\Test')

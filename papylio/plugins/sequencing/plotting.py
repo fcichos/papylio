@@ -3,7 +3,7 @@
 import math
 import numpy as np
 import xarray as xr
-from pathlib2 import Path
+from pathlib import Path
 
 
 

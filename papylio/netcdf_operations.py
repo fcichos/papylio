@@ -7,7 +7,7 @@ import tqdm
 import numpy as np
 import netCDF4
 from joblib import Parallel, delayed
-from pathlib2 import Path
+from pathlib import Path
 
 
 def get_dimension_size(filepath, dimension, with_selected_only=False, with_sequence_only=False):

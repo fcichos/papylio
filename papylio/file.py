@@ -1125,7 +1125,7 @@ class File:
             filename = f'{self.absoluteFilePath}_steps_data.xlsx'
         try:
             steps_data = pd.read_excel(filename, index_col=[0,1],
-                                       dtype={'kon':np.str})       # reads from the 1st excel sheet of the file
+                                       dtype={'kon': str})       # reads from the 1st excel sheet of the file
 
             print(f'imported steps data from excel file for {self.name}')
         except FileNotFoundError:

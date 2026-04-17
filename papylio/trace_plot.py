@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 # from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar
 
 import numpy as np
-from pathlib2 import Path
+from pathlib import Path
 
 from PySide6.QtWidgets import (QMainWindow, QPushButton, QWidget, QVBoxLayout, QHBoxLayout, QLineEdit, QCheckBox, QLabel,
                                QTableWidget, QTableWidgetItem, QHeaderView, QTreeView, QStyledItemDelegate,
