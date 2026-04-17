@@ -1260,6 +1260,8 @@ class File:
     def calculate_FRET(self):
         """Calculate and save FRET values for the intensity traces."""
         intensity = self.intensity
+        if 1 not in intensity.channel.values:
+            return
         FRET = calculate_FRET(intensity)
         FRET.attrs = intensity.attrs
         FRET.to_netcdf(self.absoluteFilePath.with_suffix('.nc'), engine='netcdf4', mode='a')
