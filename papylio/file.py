@@ -982,7 +982,7 @@ class File:
             ax.add_patch(circle)
         ax.set_xlabel('x (pixel)')
         ax.set_ylabel('y (pixel)')
-        ax.set_title('Circles at $2\sigma$')
+        ax.set_title(r'Circles at $2\sigma$')
 
         psf_size_path = self.experiment.analysis_path.joinpath('PSF_size')
         psf_size_path.mkdir(parents=True, exist_ok=True)

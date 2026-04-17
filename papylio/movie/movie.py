@@ -187,7 +187,7 @@ class Movie:
         """
         image_info = {}
 
-        fov_index_result = re.search('(?<=_fov)\d*(?=[_.])', filename)
+        fov_index_result = re.search(r'(?<=_fov)\d*(?=[_.])', filename)
         if fov_index_result is not None:
             image_info['fov_index'] = int(fov_index_result.group())
 
@@ -196,10 +196,10 @@ class Movie:
         elif '_max' in filename:
             image_info['projection_type'] = 'maximum'
 
-        frame_start = re.search('(?<=_f)\d*(?=[-])', filename)
+        frame_start = re.search(r'(?<=_f)\d*(?=[-])', filename)
         if frame_start is not None:
-            frame_end = re.search(f'(?<=_f{frame_start.group()}-)\d*(?=[-_.])', filename)
-            frame_interval = re.search(f'(?<=_f{frame_start.group()}-{frame_end.group()}-)\d*(?=[_.])', filename)
+            frame_end = re.search(rf'(?<=_f{frame_start.group()}-)\d*(?=[-_.])', filename)
+            frame_interval = re.search(rf'(?<=_f{frame_start.group()}-{frame_end.group()}-)\d*(?=[_.])', filename)
             if frame_end is not None:
                 frame_range = (int(frame_start.group()), int(frame_end.group()))
             else:
@@ -208,7 +208,7 @@ class Movie:
                 frame_range += (int(frame_interval.group()),)
             image_info['frame_range'] = frame_range
 
-        illumination_result = re.search('(?<=_i)\d*(?=[_.])', filename)
+        illumination_result = re.search(r'(?<=_i)\d*(?=[_.])', filename)
         if illumination_result is None:
             image_info['illumination_index'] = None  # list(self.illumination_indices.values)
         else:

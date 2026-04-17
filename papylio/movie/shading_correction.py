@@ -447,8 +447,8 @@ def inexact_alm_l1(imgs, l_s, l_d, tol=1e-6, maxIter=500, weight=1, estimateDark
     % while ~converged
     %   minimize (inexactly, update A and E only once)
     %   L(W, E,Y,u) = |E|_1+lambda * |W|_1 + <Y2,D-repmat(QWQ^T)-E> + +mu/2 * |D-repmat(QWQ^T)-E|_F^2;
-    %   Y1 = Y1 + \mu * (D - repmat(QWQ^T) - E);
-    %   \mu = \rho * \mu;
+    %   Y1 = Y1 + \\mu * (D - repmat(QWQ^T) - E);
+    %   \\mu = \\rho * \\mu;
     % end
     %
     % Tingying Peng (tingying.peng@tum.de)
