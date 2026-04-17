@@ -300,7 +300,8 @@ class Experiment:
         # Load custom config file or otherwise load the default config file
         self.configuration = Configuration(self.main_path.joinpath('config.yml'))
 
-        os.chdir(main_path)
+        if main_path:
+            os.chdir(main_path)
 
         # file_paths = self.find_file_paths()
         # self.add_files(file_paths, test_duplicates=False)

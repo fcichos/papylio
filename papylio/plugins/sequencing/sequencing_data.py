@@ -489,7 +489,7 @@ def bitwise_flag(flag, bit):
 def number_of_primary_sequence_alignments(sam_filepath):
     """Count number of primary (non-supplementary, non-secondary) alignments in SAM file."""
     sam_filepath = Path(sam_filepath)
-    compiled_regex = re.compile('(?<=\t)\d*(?=\t)')
+    compiled_regex = re.compile(r'(?<=\t)\d*(?=\t)')
     is_primary_alignment_list = []
     for line in tqdm.tqdm(sam_filepath.open('r'), 'Determine number of primary alignments'):
         if line[0] != '@': # Remove header lines
