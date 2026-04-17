@@ -515,6 +515,9 @@ class Experiment:
                 new_file_paths_and_extensions.append([file_path, extensions])
         file_paths_and_extensions = new_file_paths_and_extensions
 
+        if not file_paths_and_extensions:
+            return np.array([]), []
+
         file_paths_and_extensions = np.array(file_paths_and_extensions)
 
         file_paths_and_extensions = file_paths_and_extensions[file_paths_and_extensions[:, 0].argsort()]
